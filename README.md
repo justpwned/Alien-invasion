@@ -1,2 +1,2 @@
 # Alien-invasion
-Alien invasion game using Pygame
+Alien invasion game. Made using Pygame
