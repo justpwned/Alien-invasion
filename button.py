@@ -23,7 +23,6 @@ class Button:
         """Turn msg into a rendered image and center text on the button"""
         self.msg_image = self.font.render(msg, True, self.text_color)
         self.msg_image_rect = self.msg_image.get_rect()
-        #self.msg_image_rect.center = self.rect.center
         self.msg_image_rect.centerx = self.rect.centerx + 6
         self.msg_image_rect.centery = self.rect.centery
 

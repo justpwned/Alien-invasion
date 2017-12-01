@@ -1,3 +1,5 @@
+import pickle
+
 class GameStats:
     """Track statistics for Alien Invasion"""
 
@@ -6,7 +8,12 @@ class GameStats:
         self.ai_settings = ai_settings
         self.game_active = False
         self.reset_stats()
-        self.high_score = 0
+
+        try:
+            with open('saves/highscore.pickle', 'rb') as f:
+                self.high_score = pickle.load(f)
+        except:
+            self.high_score = 0
 
     def reset_stats(self):
         """Initialize statistics that can change during the game"""

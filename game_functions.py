@@ -5,13 +5,14 @@ from bullet import Bullet
 from alien import Alien
 
 
-def check_events(ai_settings, screen, stats, sb, ship, bullets, play_button, aliens):
+def check_events(ai_settings, screen, stats, sb, ship, bullets, play_button, aliens, highscore):
     """Respond to keypresses and mouse events"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            dump_highscore(highscore)
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ai_settings, stats, sb, screen, ship, aliens, bullets)
+            check_keydown_events(event, ai_settings, stats, sb, screen, ship, aliens, bullets, highscore)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
         elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -47,7 +48,7 @@ def start_game(ai_settings, screen, stats, sb, ship, aliens, bullets):
     ship.center_ship()
 
 
-def check_keydown_events(event, ai_settings, stats, sb, screen, ship, aliens, bullets):
+def check_keydown_events(event, ai_settings, stats, sb, screen, ship, aliens, bullets, highscore):
     """Respond to keypresses"""
     if event.key == pygame.K_RIGHT:
         ship.moving_right = True
@@ -58,6 +59,7 @@ def check_keydown_events(event, ai_settings, stats, sb, screen, ship, aliens, bu
     elif event.key == pygame.K_p:
         start_game(ai_settings, screen, stats, sb, ship, aliens, bullets)
     elif event.key == pygame.K_q:
+        dump_highscore(highscore)
         sys.exit()
 
 
@@ -156,13 +158,13 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_bu
     sb.show_score()
 
     if not stats.game_active:
-        set_menu_bg(screen)
+        set_start_screen(screen)
         play_button.draw_button()
 
     pygame.display.flip()
 
 
-def set_menu_bg(screen):
+def set_start_screen(screen):
     menu_bg_image = pygame.image.load("images/menu_bg.png")
     screen.blit(menu_bg_image, menu_bg_image.get_rect())
 
@@ -228,3 +230,8 @@ def check_high_score(stats, sb):
     if stats.score > stats.high_score:
         stats.high_score = stats.score
         sb.prep_high_score()
+
+def dump_highscore(highscore):
+    import pickle
+    with open('saves/highscore.pickle', 'wb') as f:
+        pickle.dump(highscore, f)
